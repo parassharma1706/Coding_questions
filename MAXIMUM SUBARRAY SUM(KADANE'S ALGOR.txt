@@ -1,0 +1,235 @@
+**************MAXIMUM SUBARRAY SUM(KADANE'S ALGORITHM)******************
+********Brute Force Approach**********
+We are going to generate all subarray sum and in that how ever is the maximum that's our ans
+
+int n=sizeof(a)/sizeof(a[0]);
+int first=-1,last=-1;//In order to generate the sub-array we use two variables
+int max_sum=INT_MIN;
+for(int i=0;i<n;i++){
+	for(int j=i;j<n;j++){
+		int sum=0;
+		for(int k=i;k<=j;k++){
+			sum+=a[k];
+		}
+		if(sum>max_sum){
+			max_sum=sum;
+			first=i;
+			last=j;
+		}
+	}
+}
+
+cout<<max_sum<<endl;
+for(int i=first;i<=last;i++){
+	cout<<a[i]<<" ";
+}
+Time Complexity=O(n^3)
+Space Complexity=O(1)
+**********OPTIMAL APPPROACH(KADANE'S ALGORITHM)************
+
+nt first=0,last=-1;//In order to generate the sub-array we use two variables
+int max_sum=INT_MIN;
+int sum=0;
+int start=-1;
+for(int i=0;i<n;i++){
+	if(sum==0) start=i;
+	sum+=a[i];
+    
+    if(sum>max_sum){
+    	max_sum=sum;
+    	first=start;
+    	last=i;
+	}
+    if(sum<0) sum=0;
+}
+cout<<max_sum<<endl;
+for(int i=first;i<=last;i++){
+	cout<<a[i]<<" ";
+}
+
+Time Complexity=O(n)
+Space Complexity=O(1)
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+***********BEST TIME TO BUY AND SELL THE STOCKS******************
+*******Brute Force Approach***********
+
+int a[]={7,1,3,5,6,4};
+int maxpro=0;
+int n=sizeof(a)/sizeof(a[0]);
+for(int i=0;i<n;i++){
+	for(int j=i;j<n;j++){
+		if(maxpro<a[j]-a[i])
+		maxpro=a[j]-a[i];
+	}
+}
+cout<<maxpro;
+Time Complexity=O(n^2)
+Space Complexity=O(1)
+
+**********Optimal Approach***********
+
+int a[]={7,1,3,5,6,4};
+int maxpro=0;
+int mini=-1;
+for(int i=0;i<n;i++){
+	mini=min(mini,a[i]);
+	maxpro=(maxpro,a[i]-mini);
+}
+cout<<maxpro;
+Time Complexity=O(n^2)
+Space Complexity=O(1)
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+******************Rearrange Array Elements**********************
+/////VARIETY-1////
+***********Brute Force Approach**********
+int a[]={3,1,-2,-5,2,-4};
+vector<int> pos;
+vector<int> neg;
+for(int i=0;i<n;i++){
+	if(a[i]>0)
+	pos.push_back(a[i]);
+	else
+	neg.push_back(a[i]);
+}
+for(int i=0;i<pos.size();i++){
+	a[2*i]=pos[i];
+	a[2*i+1]=neg[i];
+}
+Time Complexity=O(N)+O(N/2)
+Space Complexity=O(N)
+****************Optimal Approach**************
+int a[]={3,1,-2,-5,2,-4};
+int n=sizeof(a)/sizeof(a[0]);
+vector<int> arr(n,0);
+int pos_index=0,neg_index=1;
+for(int i=0;i<n;i++){
+	if(a[i]>0){
+		arr[pos_index]=a[i];
+		pos_index+=2;
+	}
+	else{
+		arr[neg_index]=a[i];
+		neg_index+=2;
+	}
+}
+Time Complexity=O(n)
+Space Complexity=O(n) //returning the ans
+/////VARIETY-2////
+for(int i=0;i<n;i++){
+    if(a[i]>0)
+    pos.push_back(a[i]);
+    else
+    neg.push_back(a[i]);
+}
+if(pos.size()>neg.size()){
+   for(int i=0;i<neg.size();i++){
+       a[2*i]=pos[i];
+       a[2*i+1]=neg[i];
+    }
+    int index=neg.size()*2;
+    for(int i=neg.size();i<pos.size();i++){
+        a[index]=pos[i];
+        index++;
+    }
+}
+else{
+    for(int i=0;i<pos.size();i++){
+        a[2*i]=pos[i];
+        a[2*i+1]=neg[i];
+    }
+    int index=pos.size()*2;
+    for(int i=pos.size();i<neg.size();i++){
+        a[index]=neg[i];
+        index++;
+    }
+}
+Time Comp-lexity=O(2N)
+Space COmplexity=O(N)
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+*******************Set Matrix Zero********************
+******Brute Force Approach*********
+We are traversing in our 2D matrix by using two loops and if we found zero at some ith row and jth column then we are going to traverse that ith row and jth column and if element is not equal to Zero Then We mark It as -1.
+And In the next Iteration We check if element is -1 we change it to 0.
+Time Complexity=O(n*m*(n+m))+O(n*m)
+Space Complexity=O(1) 
+*********Better Approach***************
+Using two dummy arrays .One Is row dummy of size number of rows in 2D matrix and another is Column  Dummy of size of number of columns in 2D matrix.
+Time Complexity=O(2*(n*m))
+Space Complexity=O(n+m)
+
+***********Optimal Approach***************
+
+// col(m)=matrix[0][...]
+	// row(n)=matrix[...][0]
+	int col1=1;
+	for(int i=0;i<n;i++){
+		for(int j=0;j<m;j++){
+			if(matrix[i][j]==0){
+				matrix[i][0]=0;
+
+                if(j!=0){
+					matrix[0][j]=0;
+				}
+				else{
+					col1=0;
+				}
+			}
+		}
+	}
+	for(int i=1;i<n;i++){
+		for(int j=1;j<m;j++){
+			if(matrix[i][0]==0 || matrix[0][j]==0){
+				matrix[i][j]=0;
+			}
+		}
+	}
+    if(matrix[0][0]==0){
+		for(int j=0;j<m;j++){
+			matrix[0][j]=0;
+		}
+	}
+	if(col1==0){
+		for(int i=0;i<n;i++){
+			matrix[i][0]=0;
+		}
+	}
+Time Complexity=O(2*(n*m))
+Space Complexity=O(1)
+////////ANOTHER CODE/////////
+int col1=1;
+	for(int i=0;i<n;i++){
+		if(a[i][0]==0) col1=0;
+		for(int j=1;j<m;j++){
+			if(a[i][j]==0){
+				a[i][0]=a[0][j]=0;
+			}
+		}
+	}
+	for(int i=n-1;i>=0;i--){
+		for(int j=m-1;j>=1;j--){
+			if(a[i][0]==0 || a[0][j]==0)
+			    a[i][j]=0;
+		}
+		if(col1==0) a[i][0]=0;
+	}
+
+Time Complexity=O(2*(n*m))
+Space Complexity=O(1)
+)
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+********************Rotate Image*******************
+********Brute Force Approach*************
+I create an ans matrix of n*n size.And That is where I store the ans.I pick up every element and place at it's correct place.
+for(int i=0;i<n;i++){
+		for(int j=0;j<n;j++){
+			rotate[j][n-1-i]=arr[i][j];
+		}
+	}
+Time Complexity=O(n^2)
+Space Complexity=O(n^2)
